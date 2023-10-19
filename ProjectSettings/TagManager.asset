@@ -7,6 +7,8 @@ TagManager:
   - Ore
   - Mine
   - Ammo
+  - AmmoMover
+  - Tower
   layers:
   - Default
   - TransparentFX

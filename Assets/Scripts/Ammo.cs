@@ -1,21 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Ammo : MonoBehaviour
 {
-    ResourceManager gameManager;
-    public List<AmmoMover> movers = new List<AmmoMover>();
-    public AmmoMover mover = null;
-
-
-    void Start()
-    {
-        gameManager = FindObjectOfType<ResourceManager>();
-    }
+    public List<GameObject> movers = new List<GameObject>();
+    public GameObject mover = null;
+    bool inTower;
 
     void Update()
     {
-        
+        if (!mover)
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.6f);
+            foreach (Collider2D collider in colliders)
+            {
+                if (collider.CompareTag("AmmoMover") && !movers.Contains(collider.gameObject))
+                {
+                    mover = collider.gameObject;
+                    movers.Add(mover);                    
+                    GetComponent<Rigidbody2D>().velocity = collider.transform.position - transform.position;
+                }
+                else if (collider.CompareTag("Tower") && !inTower)
+                {
+                    inTower = true;
+                    Tower tower = collider.GetComponent<Tower>();
+                    tower.containedAmmo.Add(this);
+                    transform.position = tower.transform.position;
+                    GetComponent<SpriteRenderer>().enabled = false;
+                    tower.ColorUpdate();
+                }
+            }
+        }
+        else
+        {
+            if (Vector2.Distance(transform.position, mover.transform.position) > 0.6f)
+            {
+                GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+                mover = null;
+            }
+
+
+        }
     }
 }

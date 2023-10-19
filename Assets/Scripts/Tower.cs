@@ -4,17 +4,12 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-
-    ResourceManager resourceManager;
     SpriteRenderer spriteRenderer;
     public List<Ammo> containedAmmo = new List<Ammo>();
 
-    void Start()
+    private void Start()
     {
-        resourceManager = FindObjectOfType<ResourceManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (!resourceManager.Towers.Contains(this))
-            resourceManager.Towers.Add(this);
     }
 
     public void ColorUpdate()

@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff5dac44cf4a8240862d3d9c4f37c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ammoPrefab: {fileID: 1219338842343202951, guid: e48caef49700ac54483146d3090a353c, type: 3}
 --- !u!61 &6154918594412904738
 BoxCollider2D:
   m_ObjectHideFlags: 0
