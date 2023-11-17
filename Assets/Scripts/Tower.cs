@@ -6,10 +6,28 @@ public class Tower : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
     public List<Ammo> containedAmmo = new List<Ammo>();
+    public bool readyToFire = true;
+    public float reloadTime = 1f;
 
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Update()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 4f);
+
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("Enemy"))
+            {
+                if (containedAmmo[0] && readyToFire)
+                {
+
+                }
+            }
+        }
     }
 
     public void ColorUpdate()

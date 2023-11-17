@@ -8,10 +8,18 @@ public class Ammo : MonoBehaviour
     public List<GameObject> movers = new List<GameObject>();
     public GameObject mover = null;
     bool inTower;
+    public Enemy target;
+    public float speed = 1.0f;
 
     void Update()
     {
-        if (!mover)
+        if (target)
+        {
+            Vector2 direction = target.transform.position - transform.position;
+            direction.Normalize();
+            GetComponent<Rigidbody2D>().velocity = direction * speed;
+        }
+       else if (!mover)
         {
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.6f);
             foreach (Collider2D collider in colliders)
