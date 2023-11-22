@@ -8,13 +8,15 @@ public class Ammo : MonoBehaviour
     public List<GameObject> movers = new List<GameObject>();
     public GameObject mover = null;
     bool inTower;
-    public Enemy target;
+    public GameObject target;
     public float speed = 1.0f;
+    int damage = 10;
 
     void Update()
     {
         if (target)
         {
+            GetComponent<SpriteRenderer>().enabled = true;
             Vector2 direction = target.transform.position - transform.position;
             direction.Normalize();
             GetComponent<Rigidbody2D>().velocity = direction * speed;
@@ -50,6 +52,16 @@ public class Ammo : MonoBehaviour
             }
 
 
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject == target)
+        {
+            Enemy target = collision.GetComponent<Enemy>();
+            target.Health -= damage;
+            Destroy(gameObject);
         }
     }
 }

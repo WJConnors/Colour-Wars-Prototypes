@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tower : MonoBehaviour
@@ -17,17 +18,38 @@ public class Tower : MonoBehaviour
     private void Update()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 4f);
-
-        foreach (Collider2D collider in colliders)
+        List<Ammo> ammoToRemove = new List<Ammo>();
+        foreach (Ammo ammo in containedAmmo)
         {
-            if (collider.CompareTag("Enemy"))
+            foreach (Collider2D collider in colliders)
             {
-                if (containedAmmo[0] && readyToFire)
+                Debug.Log("foundsomething");
+                if (collider.CompareTag("Enemy"))
                 {
-
+                    Debug.Log("foundenemy");
+                    if (readyToFire)
+                    {
+                        StartCoroutine(Reload());
+                        ammo.target = collider.GameObject();
+                        ammoToRemove.Add(ammo);
+                    }
                 }
-            }
+            }            
         }
+        foreach (Ammo ammo2 in ammoToRemove)
+        {
+            containedAmmo.Remove(ammo2);
+        }
+        ColorUpdate();
+        ammoToRemove.Clear();
+
+    }
+
+    IEnumerator Reload()
+    {
+        readyToFire = false;
+        yield return new WaitForSeconds(reloadTime);
+        readyToFire = true;
     }
 
     public void ColorUpdate()
